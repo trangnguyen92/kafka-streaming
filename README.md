@@ -59,6 +59,33 @@ kafka-streaming/
    python test_producer.py
    ```
 
+Example output:
+```bash
+python test_producer.py                    
+Starting sample producer...
+Press Ctrl+C to stop
+
+Sent event: user_login - ba302e7f-7a90-4835-98be-be75d4e733a5
+Sent event: page_view - cb78932d-a1b4-4ec7-8724-5f9c70d81abf
+Sent event: user_action - 7b4baaad-3fe0-442e-9bc1-12f098d03db8
+Sent event: purchase - b66cfca5-61b7-4954-8c6b-28058fd6f9e7
+Message delivered to data_events [0]
+Message delivered to data_events [0]
+Message delivered to data_events [0]
+Message delivered to data_events [0]
+Sent event: user_login - 9f616f7e-9245-4fef-b501-d55e7668141b
+Sent event: page_view - b4c4997f-c727-4515-8ab5-daeab32b92cd
+Sent event: user_action - dd60783c-4bbc-40e7-865e-750b21f4d3b2
+Sent event: purchase - 44799d3f-7562-4e1c-ac63-1c778250d9f7
+Message delivered to data_events [0]
+Message delivered to data_events [0]
+Message delivered to data_events [0]
+Message delivered to data_events [0]
+Sent event: user_login - b831bfc5-86b6-43fd-acf5-5272d07919f8
+Sent event: page_view - 70c09f50-d7e1-4e49-965a-3bac879842d9
+Sent event: user_action - 422e2dee-2a87-4e45-a6b9-36db7da519d2
+```
+
 3. **Check the database** for processed data:
    ```bash
    docker exec -it etl-postgres psql -U etl_user -d etl_db -c "SELECT * FROM events LIMIT 10;"
@@ -67,6 +94,9 @@ kafka-streaming/
 ## Monitoring
 
 - **Kafka UI**: http://localhost:8080
+
+![Kafka UI](images/Kafka_ui.png)
+
 - **PostgreSQL**: localhost:5432
   - Database: `etl_db`
   - User: `etl_user`
