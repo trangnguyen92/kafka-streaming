@@ -141,6 +141,29 @@ docker exec -it etl-postgres psql -U etl_user -d etl_db -c "SELECT * FROM events
 
 ```
 
+5. **View the `event_summary`**:
+   ```bash
+   docker exec -it etl-postgres psql -U etl_user -d etl_db -c "SELECT * FROM event_summary;"
+   ```
+
+```bash
+docker exec -it etl-postgres psql -U etl_user -d etl_db -c "SELECT * FROM event_summary LIMIT 10;"
+ event_type  | event_date | event_count | unique_users 
+-------------+------------+-------------+--------------
+ page_view   | 2025-06-22 |           4 |            4
+ purchase    | 2025-06-22 |           4 |            4
+ user_action | 2025-06-22 |           4 |            4
+ user_login  | 2025-06-22 |           4 |            4
+ user_login  | 2025-06-14 |         188 |          188
+ page_view   | 2025-06-14 |         188 |          188
+ user_action | 2025-06-14 |         188 |          188
+ purchase    | 2025-06-14 |         188 |          188
+ user_login  | 2025-06-13 |          30 |           30
+ purchase    | 2025-06-13 |          30 |           30
+(10 rows)
+```
+
+
 
 ## Monitoring
 
