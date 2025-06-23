@@ -11,7 +11,41 @@ This Docker Compose stack provides a complete ETL pipeline with Kafka and Postgr
 - **Kafka UI**: Web interface for monitoring Kafka (optional)
 - **Sample Producer**: Python script to produce test messages to Kafka
 
-
+```mermaid
+graph TB
+    Producer[Sample Producer<br/>Python Script] -->|Publishes Events| Kafka[Kafka Broker<br/>Port 9092]
+    
+    Zookeeper[Zookeeper<br/>Port 2181] -->|Coordination| Kafka
+    
+    Kafka -->|Consumes Events| Consumer[ETL Consumer<br/>Python Service]
+    
+    Consumer -->|Processes & Stores| PostgreSQL[(PostgreSQL<br/>Database<br/>Port 5432)]
+    
+    PostgreSQL -->|Raw Backup| RawEvents[(raw_events table)]
+    PostgreSQL -->|Processed Data| Events[(events table)]
+    PostgreSQL -->|Analytics| View[event_summary view]
+    
+    Kafka -->|Monitoring| KafkaUI[Kafka UI<br/>Web Interface<br/>Port 8080]
+    
+    subgraph "Docker Network"
+        Kafka
+        Zookeeper
+        Consumer
+        PostgreSQL
+        KafkaUI
+    end
+    
+    subgraph "Data Flow"
+        Producer
+        Consumer
+    end
+    
+    style Producer fill:#e1f5fe
+    style Consumer fill:#f3e5f5
+    style Kafka fill:#fff3e0
+    style PostgreSQL fill:#e8f5e8
+    style KafkaUI fill:#fce4ec
+```
 ## Directory Structure
 
 ```
