@@ -227,7 +227,7 @@ The ETL consumer can be configured using these environment variables:
 
 ### Customizing the ETL Logic
 
-Modify the `process_message()` method in `etl-service/consumer.py` to implement your specific data transformation logic.
+Modify the `process_message()` method in `etl-service/consumer.py` to implement the specific data transformation logic.
 
 ## Database Schema
 
