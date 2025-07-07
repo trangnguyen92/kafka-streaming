@@ -67,7 +67,6 @@ class ETLProcessor:
         Add your business logic here
         """
         try:
-            # Example transformation - modify according to your needs
             processed_data = {
                 'id': message_data.get('id'),
                 'event_type': message_data.get('event_type', 'unknown'),
