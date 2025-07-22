@@ -1,0 +1,11 @@
+apache-airflow==3.0.3
+apache-airflow-providers-google==16.1.0
+apache-airflow-providers-postgres==6.2.1
+confluent-kafka==2.3.0
+redis==5.0.4
+pandas==2.2.2
+sqlalchemy==2.0.36
+psycopg2-binary==2.9.9
+python-dateutil==2.9.0
+pytz==2024.1
+numpy==1.26.4

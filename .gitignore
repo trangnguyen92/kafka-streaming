@@ -2,3 +2,9 @@
 
 .idea
 .DS_Store
+
+airflow/config
+airflow/dags/files
+airflow/dags/__pycache__
+airflow/logs
+airflow/plugins

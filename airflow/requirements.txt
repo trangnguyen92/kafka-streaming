@@ -1,0 +1,6 @@
+apache-airflow-providers-google==16.1.0
+apache-airflow-providers-postgres==6.2.1
+pyarrow
+pandas
+sqlalchemy
+psycopg2-binary
