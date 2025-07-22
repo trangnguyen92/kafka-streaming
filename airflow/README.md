@@ -1,9 +1,24 @@
+# ETL Pipeline with Airflow, Postgres, GCS, and BigQuery
+
+This project demonstrates how to set up an ETL pipeline using Apache Airflow, Postgres, Google Cloud Storage (GCS),
+and BigQuery. The pipeline extracts employee data from a CSV file, loads it into Postgres, and then transfers it to BigQuery.
+
+![DAG](images/process_employees_dag.png)
+
+## 1. Setup Instructions
+
+- Ensure you have Docker and Docker Compose installed on your machine.
+- The `.env` file should contain the following environment variables:
+  ```bash
+  echo -e "AIRFLOW_UID=$(id -u)" > .env
+  ```
+- Run the following command to start the Airflow environment:
 ```bash
 docker-compose up airflow-init
 docker-compose up
 ```
 
-## Configure Postgres Connection
+## 2. Configure Postgres Connection
 - Open the Airflow UI at `http://localhost:8080`
 - Log in with the default credentials:
   - Username: `airflow`
@@ -18,8 +33,9 @@ docker-compose up
   - Password: `airflow`
   - Database: `airflow`
 
-## Configure GCP connection
-### Setup Google Cloud Service Account
+## 3. Configure GCP connection
+
+### 3.1. Setup Google Cloud Service Account
 1. Go to the [Google Cloud Console](https://console.cloud.google.com/).
 2. Create a new project or select an existing one.
 3. Navigate to "IAM & Admin" -> "Service Accounts".
@@ -34,14 +50,14 @@ docker-compose up
    - Choose JSON format and click "Create".
    - Save the downloaded JSON file securely.
 
-### Configure Airflow to use the GCP Service Account
+### 3.2. Configure Airflow to use the GCP Service Account
 - Go to Admin -> Connections
 - Click on "Create" to add a new connection
 - Connection ID: `gcp_trang_default`
 - Connection Type: `Google Cloud`
 - Keyfile JSON: Paste the content of your GCP service account JSON key file here.
 
-## Create a GCS bucket
+## 4. Create a GCS bucket
 1. Go to the [Google Cloud Console](https://console.cloud.google.com/).
 2. Navigate to "Storage" -> "Browser".
 3. Click on "Create bucket".
@@ -50,7 +66,7 @@ docker-compose up
 6. Click "Create" to create the bucket.
 
 
-## Create a BigQuery dataset
+## 5. Create a BigQuery dataset
 1. Go to the [Google Cloud Console](https://console.cloud.google.com/).
 2. Navigate to "BigQuery".
 3. Click on your project name in the left sidebar.
@@ -59,7 +75,7 @@ docker-compose up
 6. Choose a data location.
 7. Click "Create Dataset" to create the dataset.
 
-## Run the DAG
+## 6. Run the DAG
 - Open the Airflow UI at `http://localhost:8080`
 - You should see the DAG `process_employees` in the list of DAGs.
 - Turn on the DAG by toggling the switch next to it.
