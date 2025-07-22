@@ -32,73 +32,66 @@ The URL for the dataset is [here](https://raw.githubusercontent.com/apache/airfl
 ```mermaid
 graph TB
     %% Data Source
-    GITHUB["🌐<br/><b>GitHub Repository</b><br/>📄 CSV Data Source<br/>External Data Provider"]
+    GITHUB["🌐 GitHub Repository<br/>📄 CSV Data Source"]
     
     %% Orchestration Layer
-    subgraph AIRFLOW_BOX ["⚡ APACHE AIRFLOW ⚡<br/>🔄 ETL Pipeline Orchestration"]
-        direction TB
-        SCHEDULER["⏰ Scheduler<br/>Daily Execution<br/>Cron: 0 0 * * *"]
-        WORKER["🔧 Worker Nodes<br/>Task Processing<br/>& Execution"]
-        WEBUI["🖥️ Web Interface<br/>Pipeline Monitoring<br/>& Management"]
+    subgraph AIRFLOW_BOX ["⚡ APACHE AIRFLOW"]
+        SCHEDULER["⏰ Scheduler<br/>Daily Execution"]
+        WORKER["🔧 Worker Nodes<br/>Task Processing"]
         
         SCHEDULER -.-> WORKER
-        WORKER -.-> WEBUI
     end
     
     %% Processing & Staging
-    subgraph POSTGRES_BOX ["🐘 POSTGRESQL DATABASE<br/>🗄️ Staging & Production Storage"]
-        direction LR
-        TEMP_TABLE["📊 Temporary Table<br/>Staging Area<br/>Data Validation"]
-        MAIN_TABLE["🏛️ Production Table<br/>Final Storage<br/>UPSERT Operations"]
+    subgraph POSTGRES_BOX ["🐘 POSTGRESQL"]
+        TEMP_TABLE["📊 Temp Table<br/>Staging"]
+        MAIN_TABLE["🏛️ Production Table<br/>Final Storage"]
         
-        TEMP_TABLE -->|Merge/Upsert| MAIN_TABLE
+        TEMP_TABLE -->|Upsert| MAIN_TABLE
     end
     
     %% Local Storage
-    subgraph LOCAL_BOX ["🗂️ LOCAL FILE SYSTEM<br/>📁 /opt/airflow/dags/files/"]
-        direction TB
-        RAW_CSV["📄 CSV Files<br/>Downloaded Data<br/>Original Format"]
-        LOCAL_PARQUET["⚡ Parquet Files<br/>Converted Locally<br/>Ready for Upload"]
+    subgraph LOCAL_BOX ["🗂️ LOCAL STORAGE"]
+        RAW_CSV["📄 CSV Files"]
+        LOCAL_PARQUET["⚡ Parquet Files"]
         
-        RAW_CSV -->|Format Conversion| LOCAL_PARQUET
+        RAW_CSV --> LOCAL_PARQUET
     end
     
     %% Data Lake
-    subgraph GCS_BOX ["☁️ GOOGLE CLOUD STORAGE<br/>🏞️ Data Lake Infrastructure"]
-        PARQUET["⚡ Parquet Files<br/>Processed Data<br/>Columnar Format"]
+    subgraph GCS_BOX ["☁️ GOOGLE CLOUD STORAGE"]
+        PARQUET["⚡ Parquet Files<br/>Columnar Format"]
     end
     
     %% Data Warehouse
-    subgraph BQ_BOX ["📊 GOOGLE BIGQUERY<br/>🏭 Cloud Data Warehouse"]
-        direction TB
-        EXTERNAL_TABLE["🔗 External Table<br/>Zero-copy Access<br/>Points to GCS"]
-        DATASET["📚 Dataset<br/>Organized Structure<br/>Analytics Ready"]
+    subgraph BQ_BOX ["📊 BIGQUERY"]
+        EXTERNAL_TABLE["🔗 External Table"]
+        DATASET["📚 Dataset"]
         
         EXTERNAL_TABLE --> DATASET
     end
     
     %% Main Data Flow
-    GITHUB -->|"📥 Extract<br/>Download CSV"| SCHEDULER
-    WORKER -->|"💾 Save Locally<br/>CSV File"| RAW_CSV
-    WORKER -->|"📤 Load<br/>Bulk Insert"| TEMP_TABLE
-    LOCAL_PARQUET -->|"📤 Upload<br/>to Cloud"| PARQUET
-    PARQUET -->|"🔗 Create<br/>External Table"| EXTERNAL_TABLE
+    GITHUB --> SCHEDULER
+    WORKER --> RAW_CSV
+    WORKER --> TEMP_TABLE
+    LOCAL_PARQUET --> PARQUET
+    PARQUET --> EXTERNAL_TABLE
     
-    %% Styling with enhanced colors and borders
-    classDef source fill:#e3f2fd,stroke:#1976d2,stroke-width:3px,color:#000
-    classDef orchestration fill:#f3e5f5,stroke:#7b1fa2,stroke-width:3px,color:#000
-    classDef database fill:#e8f5e8,stroke:#388e3c,stroke-width:3px,color:#000
-    classDef datalake fill:#e0f2f1,stroke:#00695c,stroke-width:3px,color:#000
-    classDef warehouse fill:#fff3e0,stroke:#f57c00,stroke-width:3px,color:#000
-    classDef component fill:#f5f5f5,stroke:#424242,stroke-width:2px,color:#000
+    %% Styling
+    classDef source fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    classDef orchestration fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef database fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
+    classDef datalake fill:#e0f2f1,stroke:#00695c,stroke-width:2px
+    classDef warehouse fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    classDef component fill:#f5f5f5,stroke:#424242,stroke-width:1px
     
     class GITHUB source
     class AIRFLOW_BOX orchestration
     class POSTGRES_BOX database
     class GCS_BOX datalake
     class BQ_BOX warehouse
-    class LOCAL_BOX local
-    class SCHEDULER,WORKER,WEBUI,TEMP_TABLE,MAIN_TABLE,RAW_CSV,LOCAL_PARQUET,PARQUET,EXTERNAL_TABLE,DATASET component
+    class SCHEDULER,WORKER,TEMP_TABLE,MAIN_TABLE,RAW_CSV,LOCAL_PARQUET,PARQUET,EXTERNAL_TABLE,DATASET component
 ```
 
 ### DAG Graph
